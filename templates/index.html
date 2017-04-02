@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<!--
+    Felipe Ryan Jul 2015
+-->
+<head>
+	<title>Testing websockets</title>
+
+    <style type="text/css">
+        .dark {
+            color: #33FF33;
+            font-family: "Lucida Console", Monaco, monospace;
+        }
+        canvas { border: 1px solid black; }
+    </style>
+</head>
+
+<body class="dark">
+
+    <h1> Test page to verify the connection </h1>
+
+    <h3 id="status">Not yet connected...</h3>
+
+    <canvas id="canvas_id" width=500, height=400></canvas>
+    <br/>
+    <button id="start_button" onclick="start_button()"> Start </button>
+    <button id="start_button" onclick="stop_button()"> Stop </button>
+
+    <p>Messages received:</p>
+    <ul id="scans"></ul>
+
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io.connect('//' + document.domain + ':' + location.port); 
+          
+        socket.on('connect', function() {
+            socket.emit('ping', {data: 'Client connected!'});
+        });
+
+        socket.on('pong', function(response) {
+        	console.log(response);
+        	r = JSON.parse(response);
+        	var user_feedback_message = document.getElementById('status');
+        	user_feedback_message.innerHTML = r.message;
+        });
+
+        socket.on('scan', function(response) {
+        	console.log(response);
+        	r = JSON.parse(response);
+        	var scan_info = document.getElementById('scans');
+        	scan_info.innerHTML = scan_info.innerHTML + '<li>' + r.message + '</li>' ;
+
+            draw(r.message);
+
+        });
+
+        function draw(positions){
+            var canvas = document.getElementById('canvas_id');            
+
+            if (canvas.getContext) {                                
+                var ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for (var i = 0; i < positions.length; i++) {
+                    console.log('drawing ' + i);
+                    ctx.fillStyle = 'rgb(200, 0, 0)';
+                    ctx.fillRect((8 * (positions[i][0])) + 3, (8 * positions[i][1]) + 3, 4, 4);
+                }
+                                
+            } else {
+                console.error('Canvas not supported?!');
+            }
+        }
+ 
+        function start_button(){
+            var currentdate = new Date();
+            var the_time = ""+currentdate.getHours()+":"+currentdate.getMinutes()+":"+currentdate.getSeconds();
+            socket.emit('start', {data: "Start clicked: " + the_time});
+        }
+
+        function stop_button(){
+            socket.emit('stop', {data: "stop thread"});
+        }
+
+    </script>
+
+</body>
+</html>

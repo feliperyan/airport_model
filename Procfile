@@ -1,0 +1,1 @@
+web: gunicorn --access-logfile - -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1 server_flask_websocket:app
