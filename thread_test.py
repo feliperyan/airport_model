@@ -53,7 +53,7 @@ class TimerClass(Thread):
             
             print(moves)
 
-            future = self.producer.send('test', value={'moves': moves})                        
+            future = self.producer.send('topic1', value={'moves': moves})                        
             record_metadata = future.get(timeout=10)
             print (record_metadata.topic)
             print (record_metadata.partition)

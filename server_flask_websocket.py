@@ -71,18 +71,12 @@ def handle_start(jsonMessage):
 #
 @socketio.on('start')
 def threaded_handle_start(jsonMessage):
-    
-    #TODO: Comment some of this back in!
 
-    # reply = json.dumps({'message':'Starting'})
-    # emit('Starting', reply)
-    # global tt
-    # tt = TimerClass(socketio, 50)
-    # tt.start()
-
-    print('Attempting Kafka Message')
-    producer = kafka_helper.get_kafka_producer()
-    future = producer.send('test', value={'moves': 'lambada'})
+    reply = json.dumps({'message':'Starting'})
+    emit('Starting', reply)
+    global tt
+    tt = TimerClass(socketio, 50)
+    tt.start()    
 
     # for i in range(1, 5):
     #     socketio.emit('scan', json.dumps({'message': 'aloha mahalo'}))
