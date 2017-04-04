@@ -32,7 +32,7 @@ class TimerClass(Thread):
 
 
     def run(self):
-        airport = getMapFromFile('map.txt')    
+        airport = getMapFromFile('sydney_airport.txt')
         i = 0 
 
         while True:
@@ -40,9 +40,17 @@ class TimerClass(Thread):
                 print('Event Set')
                 break
 
-            if i % 20 == 0:
-                airport.add_passenger_block((0,0), 2,2)                
-                for person in airport.members:
+            if i % 50 == 0:
+                terminal = floor(3*random())
+                new_arrivals = None
+                if terminal == 0:
+                    new_arrivals = airport.add_passenger_block((35, 35), 12, 2)
+                elif terminal == 1:
+                    new_arrivals = airport.add_passenger_block((84, 8), 7, 4)
+                else:
+                    new_arrivals = airport.add_passenger_block((17, 93), 9, 5)
+
+                for person in new_arrivals:
                     exits = airport.exits
                     size = len(exits)
                     person.destination = exits[floor(size * random())]
@@ -50,33 +58,17 @@ class TimerClass(Thread):
 
             move_list = airport.move_all()
             moves = [m.pos() for m in move_list]
-            
+
             print(moves)
 
-            future = self.producer.send('topic1', value={'moves': moves})                        
+            future = self.producer.send('topic1', value={'moves': moves})
             record_metadata = future.get(timeout=10)
-            print (record_metadata.topic)
-            print (record_metadata.partition)
-            print (record_metadata.offset)            
+            print(record_metadata.topic)
+            print(record_metadata.partition)
+            print(record_metadata.offset)
+
+            #For now also emit socket message:
+            self.sock.emit('scan', json.dumps({'message': moves}))
 
             i += 1
             sleep(1)
-
-
-def move_world(socketio, rounds=300, producer=None):
-    for i in range(1, 30):
-        time.sleep(1)
-
-        if i % 50 == 0:
-            add_block()
-            time.sleep(1)
-            add_passenger_block
-
-        move_list = airport.move_all()
-        moves = [m.pos() for m in move_list]
-
-        print(i)
-
-        producer.send('test', value={'k': 'v'})
-
-        #socketio.emit('scan', json.dumps({'message': moves}))
