@@ -40,22 +40,21 @@ class TimerClass(Thread):
                 print('Event Set')
                 break
 
-            if i % 50 == 0:
-                terminal = floor(3*random())
+            if i % 30 == 0:
+                terminal = floor(2*random())
                 new_arrivals = None
-                if terminal <= 5:
+                if terminal == 0:
                     new_arrivals = airport.add_passenger_block((35, 33), 12, 2)
-                    new_arrivals.extend(airport.add_passenger_block((92,8), 12,2))
-                # elif terminal == 1:
-                #     new_arrivals = airport.add_passenger_block((84, 8), 7, 4)
-                # else:
-                #     new_arrivals = airport.add_passenger_block((17, 93), 9, 5)
+                else:
+                    new_arrivals = airport.add_passenger_block((92, 8), 12, 2)
 
                 for person in new_arrivals:
                     exits = airport.exits
                     size = len(exits)
                     person.destination = exits[floor(size * random())]
                     person.path = person.a_star_pathfinding(airport)
+
+                i = 1 # just resetting so we don't get a huge i after a while.
 
             move_list = airport.move_all()
             moves = [m.pos() for m in move_list]
