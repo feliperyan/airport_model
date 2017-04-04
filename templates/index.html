@@ -132,6 +132,7 @@
                 <br/>
                 <br/>           
                 <button id="start_button" onclick="start_button()" class="btn btn_ btn-primary raised"> Start </button>
+                <button id="start_button" onclick="flood_button()" class="btn btn_ btn-primary raised"> Flood </button>
                 <button id="start_button" onclick="stop_button()" class="btn btn_ btn-primary raised"> Stop </button>
                 <br/>
                 <br/>
@@ -188,6 +189,12 @@
 
         function stop_button(){
             socket.emit('stop', {data: "stop thread"});
+        }
+
+        function flood_button(){
+            var currentdate = new Date();
+            var the_time = ""+currentdate.getHours()+":"+currentdate.getMinutes()+":"+currentdate.getSeconds();
+            socket.emit('flood', {data: "Start clicked: " + the_time});
         }
 
     </script>

@@ -9,11 +9,11 @@ from math import floor
 
 
 class TimerClass(Thread):
-    def __init__(self, socketio, rounds):
+    def __init__(self, socketio, soft):
         Thread.__init__(self)
         self.event = Event()
         self.sock = socketio
-        self.rounds = rounds
+        self.soft = soft
 
         try:
             self.producer = kafka_helper.get_kafka_producer()
@@ -61,16 +61,27 @@ class TimerClass(Thread):
 
             print(moves)
 
-            #local test topic
-            # future = self.producer.send('topic1', value={'moves': moves})
+            if not self.soft:
+                for m in moves:
+                    #prod topic:
+                    future = self.producer.send('movement-keyword', value={'move': m})
+                    #local test topic
+                    #future = self.producer.send('topic1', value={'move': m})
+                    record_metadata = future.get(timeout=10)
+                    print(record_metadata.topic)
+                    print(record_metadata.partition)
+                    print(record_metadata.offset)
 
-            #prod topic:
-            future = self.producer.send('movement-keyword', value={'moves': moves})
-            
-            record_metadata = future.get(timeout=10)
-            print(record_metadata.topic)
-            print(record_metadata.partition)
-            print(record_metadata.offset)
+            else:
+                #prod topic:
+                future = self.producer.send('movement-keyword', value={'moves': moves})
+                #local topic
+                #future = self.producer.send('topic1', value={'moves': moves})
+                record_metadata = future.get(timeout=10)
+                print(record_metadata.topic)
+                print(record_metadata.partition)
+                print(record_metadata.offset)
+
 
             #For now also emit socket message:
             self.sock.emit('scan', json.dumps({'message': moves}))

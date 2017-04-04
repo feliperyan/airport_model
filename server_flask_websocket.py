@@ -16,6 +16,7 @@ socketio = SocketIO(app)
 
 app.debug = True
 
+threads = list()
 
 @app.route('/')
 def hello():
@@ -74,18 +75,40 @@ def threaded_handle_start(jsonMessage):
 
     reply = json.dumps({'message':'Starting'})
     emit('Starting', reply)
-    global tt
-    tt = TimerClass(socketio, 50)
-    tt.start()    
+    
+    # global tt
 
-    # for i in range(1, 5):
-    #     socketio.emit('scan', json.dumps({'message': 'aloha mahalo'}))
+    for t in threads:
+        t.event.set()
+    
+    tt = TimerClass(socketio, True)
+    threads.append(tt)
+    tt.start()
+
+
+@socketio.on('flood')
+def threaded_handle_flood(jsonMessage):
+
+    reply = json.dumps({'message':'Starting'})
+    emit('Starting - FLOOD', reply)
+    
+    # global tt
+
+    for t in threads:
+        t.event.set()
+    
+    tt = TimerClass(socketio, False)
+    threads.append(tt)
+    tt.start()
+
 
 @socketio.on('stop')
 def stop_thread(jsonMessage):
     print('\nStop Thread\n')
     # if tt and tt.isAlive():
-    tt.event.set()
+    
+    for t in threads:
+        t.event.set()
 
 
 if __name__ == '__main__':
