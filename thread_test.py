@@ -43,12 +43,13 @@ class TimerClass(Thread):
             if i % 50 == 0:
                 terminal = floor(3*random())
                 new_arrivals = None
-                if terminal == 0:
-                    new_arrivals = airport.add_passenger_block((35, 35), 12, 2)
-                elif terminal == 1:
-                    new_arrivals = airport.add_passenger_block((84, 8), 7, 4)
-                else:
-                    new_arrivals = airport.add_passenger_block((17, 93), 9, 5)
+                if terminal <= 5:
+                    new_arrivals = airport.add_passenger_block((35, 33), 12, 2)
+                    new_arrivals.extend(airport.add_passenger_block((92,8), 12,2))
+                # elif terminal == 1:
+                #     new_arrivals = airport.add_passenger_block((84, 8), 7, 4)
+                # else:
+                #     new_arrivals = airport.add_passenger_block((17, 93), 9, 5)
 
                 for person in new_arrivals:
                     exits = airport.exits
