@@ -43,7 +43,7 @@ def receive_scan_from_api():
 @socketio.on('ping')
 def handle_my_custom_event(jsonMessage):
     print('received json: ' + str(jsonMessage))
-    reply = json.dumps({'message':'You are connected'})
+    reply = json.dumps({'message':'Connected to Heroku'})
     emit('pong', reply)
 
 
