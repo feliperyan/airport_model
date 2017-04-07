@@ -16,18 +16,17 @@ class TimerClass(Thread):
         self.soft = soft
 
         try:
-            self.producer = kafka_helper.get_kafka_producer()
             print('\nKafka on Heroku Checks:')
+            self.producer = kafka_helper.get_kafka_producer()            
             print(kafka_helper.get_kafka_ssl_context())
             print(kafka_helper.get_kafka_brokers())
             print('\n')
 
-        except RuntimeError:
+        except Exception:
             # We're not on Heroku, try local running Kafka:
             print('Thread for Kafka running local Kafka')
             from kafka import KafkaProducer
-            producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
-            producer = KafkaProducer(value_serializer=lambda m: json.dumps(m).encode('ascii'))
+            producer = KafkaProducer(bootstrap_servers=['localhost:9092'], value_serializer=lambda v: json.dumps(v).encode('utf-8'))            
             self.producer = producer
 
 
@@ -64,9 +63,9 @@ class TimerClass(Thread):
             if not self.soft:
                 for m in moves:
                     #prod topic:
-                    future = self.producer.send('movement-keyword', value={'move': m})
+                    #future = self.producer.send('movement-keyword', value={'move': m})
                     #local test topic
-                    #future = self.producer.send('topic1', value={'move': m})
+                    future = self.producer.send('test', value={'move': m})
                     record_metadata = future.get(timeout=10)
                     print(record_metadata.topic)
                     print(record_metadata.partition)
@@ -74,9 +73,9 @@ class TimerClass(Thread):
 
             else:
                 #prod topic:
-                future = self.producer.send('movement-keyword', value={'moves': moves})
+                #future = self.producer.send('movement-keyword', value={'moves': moves})
                 #local topic
-                #future = self.producer.send('topic1', value={'moves': moves})
+                future = self.producer.send('test', value={'moves': moves})
                 record_metadata = future.get(timeout=10)
                 print(record_metadata.topic)
                 print(record_metadata.partition)
