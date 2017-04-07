@@ -86,4 +86,4 @@ class TimerClass(Thread):
             self.sock.emit('scan', json.dumps({'message': moves}))
 
             i += 1
-            sleep(1)
+            sleep(0.5)
