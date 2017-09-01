@@ -42,13 +42,17 @@ class TimerClass(Thread):
                 print('Event Set')
                 break
 
-            if i % 20 == 0:
-                terminal = floor(2*random())
+            if i % 15 == 0:
+                terminal = floor(3*random())
                 new_arrivals = None
                 if terminal == 0:
                     new_arrivals = airport.add_passenger_block((35, 33), 12, 2)
-                else:
+                
+                elif terminal == 1:
                     new_arrivals = airport.add_passenger_block((92, 8), 12, 2)
+                
+                else:
+                    new_arrivals = airport.add_passenger_block((21, 76), 8, 2)                
 
                 for person in new_arrivals:
                     exits = airport.exits
@@ -69,7 +73,7 @@ class TimerClass(Thread):
                     future = self.producer.send('movement-keyword', value={'move': m})
                     #local test topic
                     # future = self.producer.send('test', value={'move': m})
-                    # record_metadata = future.get(timeout=10)
+                    record_metadata = future.get(timeout=10)
                     print(record_metadata.topic)
                     print(record_metadata.partition)
                     print(record_metadata.offset)
@@ -79,7 +83,7 @@ class TimerClass(Thread):
                 future = self.producer.send('movement-keyword', value={'moves': moves})
                 #local topic
                 # future = self.producer.send('test', value={'moves': moves})
-                # record_metadata = future.get(timeout=10)
+                record_metadata = future.get(timeout=10)
                 print(record_metadata.topic)
                 print(record_metadata.partition)
                 print(record_metadata.offset)
