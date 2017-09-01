@@ -67,7 +67,7 @@ class TimerClass(Thread):
                 for m in moves:
                     #prod topic:
                     future = self.producer.send('movement-keyword', value={'move': m})
-                    local test topic
+                    #local test topic
                     # future = self.producer.send('test', value={'move': m})
                     # record_metadata = future.get(timeout=10)
                     print(record_metadata.topic)
@@ -77,7 +77,7 @@ class TimerClass(Thread):
             else:
                 #prod topic:
                 future = self.producer.send('movement-keyword', value={'moves': moves})
-                local topic
+                #local topic
                 # future = self.producer.send('test', value={'moves': moves})
                 # record_metadata = future.get(timeout=10)
                 print(record_metadata.topic)
