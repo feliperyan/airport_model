@@ -15,20 +15,23 @@ class TimerClass(Thread):
         self.sock = socketio
         self.soft = soft
 
-        try:
-            print('\nKafka on Heroku Checks:')
-            self.producer = kafka_helper.get_kafka_producer()            
+        print('\nKafka on Heroku Checks:')
+
+        try:            
+            self.producer = kafka_helper.get_kafka_producer()
             print(kafka_helper.get_kafka_ssl_context())
-            print(kafka_helper.get_kafka_brokers())
-            print('\n')
+            print(kafka_helper.get_kafka_brokers())            
+            
+            print('\nRunning on Heroku') 
 
         except Exception:
-            # We're not on Heroku, try local running Kafka:
-            print('Thread for Kafka running local Kafka')
+            
+            # We're not on Heroku, try local running Kafka:            
             from kafka import KafkaProducer
             producer = KafkaProducer(bootstrap_servers=['localhost:9092'], value_serializer=lambda v: json.dumps(v).encode('utf-8'))            
             self.producer = producer
 
+            print('\nRunning Local - so not using kafka_helper')
 
     def run(self):
         airport = getMapFromFile('sydney_airport.txt')
@@ -39,7 +42,7 @@ class TimerClass(Thread):
                 print('Event Set')
                 break
 
-            if i % 30 == 0:
+            if i % 20 == 0:
                 terminal = floor(2*random())
                 new_arrivals = None
                 if terminal == 0:
