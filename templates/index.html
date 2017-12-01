@@ -172,7 +172,14 @@
                 
                 for (var i = 0; i < positions.length; i++) {
                     console.log('drawing ' + i);
-                    ctx.fillStyle = 'rgb(200, 0, 0)';
+
+                    if(positions[i][2] > 3 ){
+                        ctx.fillStyle = 'rgb(0, 250, 0)';
+                    }
+                    else {
+                        ctx.fillStyle = 'rgb(200, 0, 0)';
+                    }
+                    
                     ctx.fillRect((5 * (positions[i][0])) + 2, (5 * positions[i][1]) + 2, 3, 3);
                 }
                                 

@@ -63,7 +63,7 @@ class TimerClass(Thread):
                 i = 1 # just resetting so we don't get a huge i after a while.
 
             move_list = airport.move_all()
-            moves = [m.pos() for m in move_list]
+            moves = [ list(m.pos()).append(m.current_patience) for m in move_list ]
 
             print(moves)
 
@@ -72,7 +72,7 @@ class TimerClass(Thread):
                     #prod topic:
                     future = self.producer.send('movement-keyword', value={'move': m})
                     #local test topic
-                    # future = self.producer.send('test', value={'move': m})
+                    #future = self.producer.send('test', value={'move': m})
                     record_metadata = future.get(timeout=10)
                     print(record_metadata.topic)
                     print(record_metadata.partition)
@@ -82,7 +82,7 @@ class TimerClass(Thread):
                 #prod topic:
                 future = self.producer.send('movement-keyword', value={'moves': moves})
                 #local topic
-                # future = self.producer.send('test', value={'moves': moves})
+                #future = self.producer.send('test', value={'moves': moves})
                 record_metadata = future.get(timeout=10)
                 print(record_metadata.topic)
                 print(record_metadata.partition)
