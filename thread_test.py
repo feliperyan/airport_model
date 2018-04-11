@@ -7,6 +7,12 @@ import kafka_helper
 from random import random
 from math import floor
 
+import os
+
+TOPIC = 'movement-keyword'
+if os.environ.get('HEROKU_KAFKA_OLIVE_PREFIX'):
+    TOPIC = os.environ.get('HEROKU_KAFKA_OLIVE_PREFIX') + TOPIC
+
 
 class TimerClass(Thread):
     def __init__(self, socketio, soft):
@@ -70,7 +76,7 @@ class TimerClass(Thread):
             if not self.soft:
                 for m in moves:
                     #prod topic:
-                    future = self.producer.send('movement-keyword', value={'move': m})
+                    future = self.producer.send(TOPIC, value={'move': m})
                     #local test topic
                     #future = self.producer.send('test', value={'move': m})
                     record_metadata = future.get(timeout=10)
@@ -80,7 +86,7 @@ class TimerClass(Thread):
 
             else:
                 #prod topic:
-                future = self.producer.send('movement-keyword', value={'moves': moves})
+                future = self.producer.send(TOPIC, value={'moves': moves})
                 #local topic
                 #future = self.producer.send('test', value={'moves': moves})
                 record_metadata = future.get(timeout=10)
