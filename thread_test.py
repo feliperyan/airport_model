@@ -69,7 +69,12 @@ class TimerClass(Thread):
                 i = 1 # just resetting so we don't get a huge i after a while.
 
             move_list = airport.move_all()
-            moves = [ list(m.pos()).append(m.current_patience) for m in move_list ]
+            moves = list()
+
+            for m in move_list:
+                element = list(m.pos())
+                element.append(m.current_patience)
+                moves.append(element)
 
             print(moves)
 
