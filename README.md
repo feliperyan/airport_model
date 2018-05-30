@@ -1,5 +1,5 @@
 # Kafka Foot Traffic Simulator 
-## Useful for visually demonstrating events streaming into Kafka.
+Useful for visually demonstrating events streaming into Kafka.
 
 ### Description
 
@@ -15,9 +15,9 @@ Clicking the start button will start the simulation in "simple" mode and you won
 
 ### Code and Caveats
 
-This demo retains state in the dyno (not 12 factor) meaning it will *not* scale to more than one dyno.
+This demo retains state in the dyno (not 12 factor) meaning it will **not** scale to more than one dyno.
 
-The map on the screen is a png/jpg/etc however it contains a *textual* representation that governs a lot in the simulation; the one used by default is sydney_airport.txt. 
+The map on the screen is a png/jpg/etc however it contains a **textual** representation that governs a lot in the simulation; the one used by default is sydney_airport.txt. 
 
 This is how you can build your own versions of the simulation, it's not a pretty process and involves a lot of manual work atm. Btw passengers move only in 4 directions.
 
