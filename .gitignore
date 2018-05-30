@@ -2,3 +2,4 @@
 .vscode
 *.swp
 *.orig
+.DS_Store
