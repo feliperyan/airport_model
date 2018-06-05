@@ -11,17 +11,20 @@ Sometimes passengers can get stuck, you'll see this reflected by the colour of t
 
 ### Usage
 
-Clicking the start button will start the simulation in "simple" mode and you won't get many events in Kafka, around 1 a second.  Flood will however emit an event per passenger; with the example included it ends being something like 50/sec after a few minutes.  This can be useful when you show consumers down the track.
+Clicking the start button will start the simulation in "simple" mode and you won't get many events in Kafka, around 1 a second.  Flood will however emit an event per passenger; with the example included it ends being something like 50/sec after a few minutes.  This can be useful when you show or build Kafka Consumers down the track.
 
 ### Code and Caveats
 
 This demo retains state in the dyno (not 12 factor) meaning it will **not** scale to more than one dyno.
 
-The map on the screen is a png/jpg/etc however it contains a **textual** representation that governs a lot in the simulation; the one used by default is sydney_airport.txt. 
+The map on the screen is a png/jpg/etc however it contains a **textual** representation that governs the simulation; the one used by default is **sydney_airport.txt**. 
 
-This is how you can build your own versions of the simulation, it's not a pretty process and involves a lot of manual work atm. Btw passengers move only in 4 directions.
+Behind the scenes the [A-Star algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) is used for pathfinding. There are Classes for the 2d Grid itself and the elements on it, see the Grid folder for the code.
 
-Definition:
+This is how you can build your own versions of the simulation, it's not a pretty process and involves a lot of manual work atm. Btw passengers move only in 4 directions. 
+
+
+### Definition for characters textual map:
 1. "." = walkable floor
 2. "#" = impassable wall
 3. "*" = exit (each passenger will randomly set her destination to one of these randomly)
