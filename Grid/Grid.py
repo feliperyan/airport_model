@@ -39,7 +39,7 @@ def getMapFromFile(file_name):
 
             elif e == SHOPS:
                 single_shop_tile_list = [ShopFloor(x=column_num, y=row_num),]
-                grid.load_elements(single_shop_tile_list)                
+                grid.load_elements(single_shop_tile_list)              
 
             column_num += 1
 

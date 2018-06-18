@@ -10,8 +10,8 @@ from math import floor
 import os
 
 TOPIC = 'movement-keyword'
-if os.environ.get('HEROKU_KAFKA_OLIVE_PREFIX'):
-    TOPIC = os.environ.get('HEROKU_KAFKA_OLIVE_PREFIX') + TOPIC
+if os.environ.get('KAFKA_PREFIX'):
+    TOPIC = os.environ.get('KAFKA_PREFIX') + TOPIC
 
 
 class TimerClass(Thread):
