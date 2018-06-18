@@ -3,3 +3,4 @@
 *.swp
 *.orig
 .DS_Store
+p_env
