@@ -8,11 +8,13 @@ from random import random
 from math import floor
 
 import os
+import uuid
 
 TOPIC = 'movement-keyword'
 if os.environ.get('KAFKA_PREFIX'):
     TOPIC = os.environ.get('KAFKA_PREFIX') + TOPIC
 
+VIPS = ['12345678', '87654321', '00011122']
 
 class TimerClass(Thread):
     def __init__(self, socketio, soft):
@@ -23,21 +25,20 @@ class TimerClass(Thread):
 
         print('\nKafka on Heroku Checks:')
 
-        try:            
+        if os.environ.get('KAFKA_URL'): 
+            print('\nRunning on Heroku') 
             self.producer = kafka_helper.get_kafka_producer()
             print(kafka_helper.get_kafka_ssl_context())
             print(kafka_helper.get_kafka_brokers())            
             
-            print('\nRunning on Heroku') 
-
-        except Exception:
-            
+        else:
+            print('\nRunning Local - so not using kafka_helper')
             # We're not on Heroku, try local running Kafka:            
             from kafka import KafkaProducer
             producer = KafkaProducer(bootstrap_servers=['localhost:9092'], value_serializer=lambda v: json.dumps(v).encode('utf-8'))            
             self.producer = producer
 
-            print('\nRunning Local - so not using kafka_helper')
+            
 
     def run(self):
         airport = getMapFromFile('sydney_airport.txt')
@@ -51,6 +52,7 @@ class TimerClass(Thread):
             if i % 15 == 0:
                 terminal = floor(3*random())
                 new_arrivals = None
+                
                 if terminal == 0:
                     new_arrivals = airport.add_passenger_block((35, 33), 12, 2)
                 
@@ -65,8 +67,15 @@ class TimerClass(Thread):
                     size = len(exits)
                     person.destination = exits[floor(size * random())]
                     person.path = person.a_star_pathfinding(airport)
+                    
+                    # Giving everyone a unique name to mimic a mac address
+                    # and facilitate analytics later
+                    person.name = str(uuid.uuid4())[:8]
 
                 i = 1 # just resetting so we don't get a huge i after a while.
+
+                # Introduce a known visitor in every landing
+                new_arrivals[0].name = VIPS[floor(len(VIPS)*random())]
 
             move_list = airport.move_all()
             moves = list()
@@ -74,6 +83,7 @@ class TimerClass(Thread):
             for m in move_list:
                 element = list(m.pos())
                 element.append(m.current_patience)
+                element.append(m.name)
                 moves.append(element)
 
             print(moves)

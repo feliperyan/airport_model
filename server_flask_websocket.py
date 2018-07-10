@@ -1,3 +1,7 @@
+# If you're getting errors running locally try
+# gunicorn -k gevent -w 1 server_flask_websocket:app
+
+
 from flask import Flask, render_template, jsonify, request, abort
 from flask_socketio import SocketIO, emit
 import json
