@@ -174,7 +174,9 @@
                     // console.log('drawing ' + i);
 
                     if(positions[i][2] > 3 ){
-                        ctx.fillStyle = 'rgb(0, 150, 0)';
+                        //ctx.fillStyle = 'rgb(0, 150, 0)';
+			var id = positions[i][3];
+			ctx.fillStyle = '#00'+id.slice(0,2)+'33';
                     }
                     else {
                         ctx.fillStyle = 'rgb(200, 0, 0)';
