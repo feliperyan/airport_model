@@ -49,7 +49,7 @@ class TimerClass(Thread):
                 print('Event Set')
                 break
 
-            if i % 15 == 0:
+            if i % 30 == 0:
                 terminal = floor(3*random())
                 new_arrivals = None
                 
