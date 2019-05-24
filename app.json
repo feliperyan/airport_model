@@ -1,0 +1,41 @@
+{
+  "addons": [
+    "heroku-kafka",
+    "heroku-postgresql",
+    "heroku-redis"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "env": {
+    "KAFKA_CLIENT_CERT": {
+      "required": true
+    },
+    "KAFKA_CLIENT_CERT_KEY": {
+      "required": true
+    },
+    "KAFKA_PREFIX": {
+      "required": true
+    },
+    "KAFKA_TRUSTED_CERT": {
+      "required": true
+    },
+    "KAFKA_URL": {
+      "required": true
+    },
+    "REDIS_URL": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "name": "airport_model",
+  "scripts": {
+  },
+  "stack": "heroku-16"
+}
