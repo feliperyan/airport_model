@@ -5,13 +5,13 @@ Useful for visually demonstrating events streaming into Kafka.
 
 The map on the screen represents an airport. On a pre-determined timeframe a group of passengers enters the airport at a random "Gate".
 
-Each passenger has a destination, one of the transports options at the bottom or other exist points. Every sencond the simulation "scans" the airport and updates the location of the passengers. 
+Each passenger has a destination, one of the transports options at the bottom or other exit points. Every sencond the simulation "scans" the airport and updates the location of the passengers. 
 
-Sometimes passengers can get stuck, you'll see this reflected by the colour of the passenger changing to red. The passenger will then try to find a new path to her destination.
+Sometimes passengers can get stuck, you'll see this reflected by the colour of the passenger changing to red. The passenger will then try to find a new path to her destination (by re-running the pathfinding algorithm)
 
 ### Usage
 
-Clicking the start button will start the simulation in "simple" mode and you won't get many events in Kafka, around 1 a second.  Flood will however emit an event per passenger; with the example included it ends being something like 50/sec after a few minutes.  This can be useful when you show or build Kafka Consumers down the track.
+Clicking the start button will start the simulation in "simple" mode and you won't get many events in Kafka, around 1 a second.  Flood will however emit an event per passenger; with the example included it ends being around 100/sec after a few minutes.  This can be useful when you show or build Kafka Consumers down the track.
 
 ### Code and Caveats
 
