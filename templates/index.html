@@ -171,10 +171,12 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 
                 for (var i = 0; i < positions.length; i++) {
-                    console.log('drawing ' + i);
+                    // console.log('drawing ' + i);
 
                     if(positions[i][2] > 3 ){
-                        ctx.fillStyle = 'rgb(0, 150, 0)';
+                        //ctx.fillStyle = 'rgb(0, 150, 0)';
+			var id = positions[i][3];
+			ctx.fillStyle = '#00'+id.slice(0,4);
                     }
                     else {
                         ctx.fillStyle = 'rgb(200, 0, 0)';

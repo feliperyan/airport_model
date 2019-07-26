@@ -49,7 +49,7 @@ class TimerClass(Thread):
                 print('Event Set')
                 break
 
-            if i % 15 == 0:
+            if i % 20 == 0:
                 terminal = floor(3*random())
                 new_arrivals = None
                 
@@ -114,4 +114,4 @@ class TimerClass(Thread):
             self.sock.emit('scan', json.dumps({'message': moves}))
 
             i += 1
-            sleep(0.5)
+            sleep(0.3)
