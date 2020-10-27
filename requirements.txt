@@ -2,7 +2,7 @@ appnope==0.1.0
 asn1crypto==0.22.0
 cffi==1.10.0
 click==6.7
-cryptography==1.8.1
+cryptography==3.2
 decorator==4.0.11
 Flask>=0.12.3
 Flask-SocketIO==2.8.5
